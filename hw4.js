@@ -1,8 +1,8 @@
  /*
    Name: Edith Mendoza
     Date created: 09/20/2024
-    Date last updated: 09/21/2024
-    Purpose: Homework 1 JS
+    Date last updated: 12/04/2024
+    Purpose: Homework 4 JS
     */
 
     //dynamic date js code//
@@ -11,8 +11,8 @@
     document.getElementById("today").innerHTML = text;
 
     //range slider js code//
-    let slider = document.getElementById("range")
-        let output = document.getElementById("range-slider")
+    let slider = document.getElementById("range");
+        let output = document.getElementById("range-slider");
         output.innerHTML = slider.value;
 
         slider.oninput = function () {output.innerHTML = this.value;};
@@ -138,20 +138,20 @@ function validateDob()
 
     if (date > new Date())
     {
-        document.getElementById("dob-error").innerHTML = "Date cannot be in the future."
+        document.getElementById("dob-error").innerHTML = "Date cannot be in the future.";
         dob.value="";
         return false;
     }
     else if(date < new Date(maxDate))
     {
-        document.getElementById("dob-error").innerHTML = "Date cannot be more than 120 years ago."
+        document.getElementById("dob-error").innerHTML = "Date cannot be more than 120 years ago.";
         dob.value="";
         return false;
     }   
         
     {
         document.getElementById("dob-error").innerHTML = "";
-        return true
+        return true;
     }
 }
 
@@ -216,7 +216,7 @@ function validateCity()
 function validateZcode()
 {
     const zipInput = document.getElementById("zcode");
-    let zip = zipInput.value.replace(/[^\d-]/g,"") //removes any non-number and non-dash characters
+    let zip = zipInput.value.replace(/[^\d-]/g,""); //removes any non-number and non-dash characters
 
     if (!zip)
     {
@@ -241,7 +241,7 @@ function validateEmail()
     email=document.getElementById("email").value;
     var emailR = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //regex pattern thing for email
 
-    if (email=="")
+    if (email==="")
     {
         document.getElementById("email-error").innerHTML = "Email cannot be empty.";
         return false; 
@@ -266,17 +266,27 @@ function validatePhone()
     const phoneInput = document.getElementById("phnum");
     const phone = phoneInput.value.replace(/\D/g,""); //removes all non-number characters
 
+     // Check if the phone number has exactly 10 digits
+     if (phone.length !== 10) 
+    {
+        document.getElementById("phnum-error").innerHTML = "Phone number must be exactly 10 digits.";
+        return false;
+    }
+
     if (phone.length !== 0)
     {
         document.getElementById("phnum-error").innerHTML = "Phone number cannot be left blank.";
         return false;
     }
 
-    const formattedPhone =
-     phone.slice(0,3) +  "-" + phone.slice(3,6) + "-" + phone.slice(6,10)
+   
+    const formattedPhone = `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6)}`;
      phoneInput.value = formattedPhone;
-     document.getElementById("phnum-error").innerHTML = "";
-     return true;
+
+    // Clear any previous error message
+    document.getElementById("phnum-error").innerHTML = "";
+    return true; 
+
 }
 
 //username validation js code
@@ -369,7 +379,7 @@ function validatePassword()
     }
 
      //check for username not in password
-     if (pword == uname || pword.includes(uname))
+     if (pword === uname || pword.includes(uname))
      {
         errorMessage.push("Password cannot contain username.");
      }
@@ -410,7 +420,7 @@ function reviewInput()
     formoutput = "<table class='output'><th colspan = '3'>Your Information:</th>";
     for (i = 0; i < formcontent.length; i++)
     {
-        if (formcontent.elements[i].value != "")
+        if (formcontent.elements[i].value !== "")
         {
             datatype = formcontent.elements[i].type;
             switch(datatype)
@@ -545,4 +555,82 @@ function validateEverything()
     }
 }
 
+//cookie for remembering info input form//
+function setCookie (name, cvalue, expiryDays) 
+{
+    var day = new Date();
+    day.setTime(day.getTime() + (expiryDays*24*60*60*1000));
+    var expires = "expires=" + day.toUTCString();
+    document.cookie = name + "=" + cvalue + ";" + expires + ";path=/";
+}
 
+function getCookie (name)
+{
+    var cookieName = name + "=";
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i <cookies.length; i++)
+    {
+        var cookie = cookies[i].trim();
+        while (cookie.charAt(0) === '')
+        {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) == 0) 
+        {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return null;
+}
+
+var inputs= 
+[
+    {id:"fname", cookieName: "firstName"},
+    {id:"mini", cookieName: "middleInitial"},
+    {id:"lname", cookieName: "lastName"},
+    {id:"dob", cookieName: "dob"},
+    {id:"ssn", cookieName: "ssn"},
+    {id:"address1", cookieName: "address1"},
+    {id:"city", cookieName: "city"},
+    {id:"email", cookieName: "email"},
+    {id:"uname", cookieName: "userName"},
+]
+
+inputs.forEach(function(input)
+{
+    var inputElement = document.getElementById(input.id);
+
+    //prefill input fields with value from the cookie
+    var cookieValue = getCookie(input.cookieName);
+    if (cookieValue !==" ")
+    {
+        inputElement.value = cookieValue;
+    }
+
+    //set a cookie with the input value when the input field changes
+    inputElement.addEventListener("input", function()
+    {
+        setCookie(input.cookieName, inputElement.value, 30);
+    });
+});
+
+//greet the user with their name + message if the cookie isi set
+var firstName = getCookie("firstName");
+if (firstName !== " ")
+{
+    document.getElementById("welcome1").innerHTML = "Welcome back," + firstName + "! </br";
+    document.getElementById("welcome2").innerHTML =
+    "<a href='#' id='new-user'>Not " + 
+    firstName + 
+    "? Click here to start a new form. </a>";
+    
+    document.getElementById("new-user").addEventListener("click", function()
+    {
+        inputs.forEach(function(input)
+        {
+            setCookie(input.cookieName,"", -1);
+        });
+        location.reload();
+    });
+}
