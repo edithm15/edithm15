@@ -6,7 +6,7 @@
 -->
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="hw3.css"> <!-- links to the css file-->
+        <link rel="stylesheet" href="hw4.css"> <!-- links to the css file-->
 
         <!-- displays text in the browsers tab-->
         <title>New Patient Registration | Healthy Living Clinic</title>
@@ -16,7 +16,7 @@
                 <tr>
                     <td valign="top" align="left" width="20%">
                         <div class="image">
-                           <img align="center" src="images/clinic-logo.png" alt="Healthy Living Clinic Logo" width="70px" id="logo"/>
+                           <img align="center" src="cliniclogo1.png" alt="Healthy Living Clinic Logo" width="70px" id="logo"/>
                         </div>
                     </td>
 
@@ -32,6 +32,16 @@
             </table>
         </header>
 <hr>
+<!--inserts welcome message to user (cookie)-->
+<center>
+    <span id="welcome1"></span>
+    <span id="welcome2"></span>
+</center>
+
+<!--iframe that looks loike an ad-->
+<div class="iframe-container">
+    <iframe class="frame" src="https://www.cdc.gov/common-cold/about/index.html" frameborder="0"></iframe>
+</div>
 <!-- form begins-->
 <form name="signup" id="signup" action="thankyou.html">
     <center>
@@ -514,12 +524,10 @@
         </div>        
     </center>
 </form>
-<!--footer goes here that contains website link-->
-<footer>
-    <p id="footer"> &#169; 2024 Healthy Living Clinic | <a href="https://www.yellowpages.com/" target="_blank" rel="noopener noreferrer">Contact Us!</a></p>
-</footer>
+<!--iframe footer goes here that contains website link-->
+<iframe src="footer.html" width="100%" height="100px" title="footer"></iframe>
 
-<script src="hw3.js"></script>
+<script src="hw4.js"></script>
 
 <!-- Inserts alert box into form when necessary-->
 <div id="alert-box">
